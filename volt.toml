@@ -1,10 +1,10 @@
-name = "<plugin-name>"
-version = "0.0.0"
-author = "<your name>"
-display-name = "<plugin-display-name>"
-description = "<plugin-description>"
-wasm = "bin/<plugin-name>.wasm"
+name = "lapce-php"
+version = "0.1.0"
+author = "Hugo Nicolas <hugo.nicolas.hn@gmail.com>"
+display-name = "PHP"
+description = "Lapce LSP plugin for PHP, powered by Phan"
+wasm = "bin/lapce-php.wasm"
 
 [activation]
-language = []
-workspace-contains = []
+language = ["php"]
+workspace-contains = ["*/*.php"]
