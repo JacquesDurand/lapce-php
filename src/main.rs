@@ -1,10 +1,12 @@
+use std::path::PathBuf;
+
 use anyhow::Result;
 use lapce_plugin::{
     psp_types::{
         lsp_types::{request::Initialize, DocumentFilter, DocumentSelector, InitializeParams, Url},
         Request,
     },
-    register_plugin, LapcePlugin, VoltEnvironment, PLUGIN_RPC,
+    register_plugin, Http, LapcePlugin, VoltEnvironment, PLUGIN_RPC,
 };
 use serde_json::Value;
 
@@ -16,9 +18,9 @@ register_plugin!(State);
 fn initialize(params: InitializeParams) -> Result<()> {
     let document_selector: DocumentSelector = vec![DocumentFilter {
         // lsp language id
-        language: Some(String::from("language_id")),
+        language: Some(String::from("PHP")),
         // glob pattern
-        pattern: Some(String::from("**/*.{ext1,ext2}")),
+        pattern: Some(String::from("**/*.php")),
         // like file:
         scheme: None,
     }];
@@ -60,6 +62,19 @@ fn initialize(params: InitializeParams) -> Result<()> {
                 }
             }
         }
+    }
+
+    let phan_archive_name = "phan.phar";
+    let phan_archive_path = PathBuf::from(phan_archive_name);
+    let phan_download_url = format!(
+        "https://github.com/phan/phan/releases/latest/download/{}",
+        phan_archive_name
+    );
+
+    if !phan_archive_path.exists() {
+        let mut response = Http::get(&phan_download_url)?;
+        let body = response.body_read_all()?;
+        std::fs::write(&phan_archive_path, body)?;
     }
 
     // Architecture check
