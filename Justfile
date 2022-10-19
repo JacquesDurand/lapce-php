@@ -8,10 +8,10 @@ install-stable: build
     mkdir -p {{xdg_data_dir}}/lapce-stable/{{plugin_dir}}/bin
     yes | cp -i bin/lapce-php.wasm {{xdg_data_dir}}/lapce-stable/{{plugin_dir}}/bin
     yes | cp -i volt.toml {{xdg_data_dir}}/lapce-stable/{{plugin_dir}}/
-    rm -rd {{xdg_data_dir}}/lapce-stable/{{plugin_dir}}/jdt-language-server-latest || true
+    rm -rd {{xdg_data_dir}}/lapce-stable/{{plugin_dir}}/phan.phar || true
 
 install-debug: build
     mkdir -p {{xdg_data_dir}}/lapce-debug/{{plugin_dir}}/bin
     yes | cp -i bin/lapce-php.wasm {{xdg_data_dir}}/lapce-debug/{{plugin_dir}}/bin
     yes | cp -i volt.toml {{xdg_data_dir}}/lapce-debug/{{plugin_dir}}
-    rm -rd {{xdg_data_dir}}/lapce-debug/{{plugin_dir}}/jdt-language-server-latest || true
+    rm -rd {{xdg_data_dir}}/lapce-debug/{{plugin_dir}}/phan.phar || true
