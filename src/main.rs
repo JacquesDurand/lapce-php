@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{path::PathBuf, str::FromStr};
 
 use anyhow::Result;
 use lapce_plugin::{
@@ -106,7 +106,13 @@ fn initialize(params: InitializeParams) -> Result<()> {
 
     // Plugin working directory
     let volt_uri = VoltEnvironment::uri()?;
-    let server_path = Url::parse(&volt_uri)?.join("[filename]")?;
+    let base_path = Url::parse(&volt_uri)?;
+
+    let phan = base_path.join(&format!("{phan_archive_name}"))?;
+    
+    let php = Url::from_str("php")?;
+    
+    server_args.push(String::from(phan));
 
     // if you want to use server from PATH
     // let server_path = Url::parse(&format!("urn:{filename}"))?;
@@ -114,7 +120,7 @@ fn initialize(params: InitializeParams) -> Result<()> {
     // Available language IDs
     // https://github.com/lapce/lapce/blob/HEAD/lapce-proxy/src/buffer.rs#L173
     PLUGIN_RPC.start_lsp(
-        server_path,
+        php,
         server_args,
         document_selector,
         params.initialization_options,
